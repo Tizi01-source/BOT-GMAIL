@@ -226,33 +226,32 @@ export class GmailService {
     const adjuntos: AdjuntoCorreo[] = [];
 
     for (const part of parts) {
-      // Saltar si no es adjunto (checamos que tenga filename)
-      if (!part.filename || part.filename.length === 0) continue;
+      // ✅ CORRECCIÓN: Usamos filename y attachmentId directamente para saber si es un adjunto
+      const fileName = part.filename;
+      const attachmentId = part.body?.attachmentId;
 
-      const fileName = part.filename ?? 'adjunto';
-      const partId = part.partId;
-
-      if (!partId) continue;
+      // Si no tiene nombre de archivo o no tiene token de adjunto, lo ignoramos
+      if (!fileName || !attachmentId) continue;
 
       try {
         const response = await this.gmail.users.messages.attachments.get({
           userId: 'me',
           messageId,
-          id: partId,
+          id: attachmentId, // Usamos el token real
         });
 
         const datosBase64Url = response.data.data ?? '';
         const datos = Buffer.from(datosBase64Url, 'base64url');
 
         adjuntos.push({
-          id: partId,
+          id: attachmentId,
           nombre: fileName,
           tipo: part.mimeType ?? 'application/octet-stream',
           datos,
         });
 
         console.log(
-          `   ✓ Adjunto: ${fileName} (${datos.length} bytes)`
+          `   ✓ Adjunto: ${fileName} (${datos.length} bytes descargados)`
         );
       } catch (err) {
         console.warn(`   ⚠️  No se pudo descargar adjunto ${fileName}:`, err);
@@ -261,6 +260,15 @@ export class GmailService {
 
     return adjuntos;
   }
+
+
+
+
+
+
+
+
+
 
   /**
    * Extrae el cuerpo en texto plano del correo
