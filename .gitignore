@@ -1,0 +1,59 @@
+# ═══════════════════════════════════════════════════════════════════
+# .gitignore - Ignora archivos sensibles y no versionables
+# ═══════════════════════════════════════════════════════════════════
+
+# 🔐 CREDENCIALES Y TOKENS (NUNCA COMITEAR)
+credenciales.json          # OAuth credentials de Google
+token.json                 # Token de autenticación (regenerable)
+.env                       # Variables de entorno con claves reales
+.env.local                 # Sobrescrituras locales
+.env.*.local               # Env específicos por ambiente
+
+# 📦 DEPENDENCIAS
+node_modules/
+package-lock.json
+yarn.lock
+.pnp
+
+# 🔨 BUILD Y DIST
+dist/
+build/
+*.tsbuildinfo
+*.d.ts
+
+# 📊 DATOS Y LOGS
+logs/
+*.log
+npm-debug.log*
+
+# 💾 IDE Y EDITORS
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+.project
+.classpath
+
+# 🧪 TESTING
+coverage/
+.nyc_output/
+*.lcov
+
+# 🔧 SISTEMA
+.cache/
+/downloads/
+/uploads/
+
+# 📁 DIRECTORIOS TEMPORALES
+tmp/
+temp/
+.tmp/
+
+# ⚠️  NO IGNORES (son necesarios para el bot)
+# Descomenta si necesitas versionarlos:
+# !.env.example
+# !setup.ps1
+# !README.md
