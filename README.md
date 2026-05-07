@@ -18,7 +18,7 @@ Automatización completa de procesamiento de solicitudes de crédito mediante an
 
 ---
 
-## ✨ Características
+## Características
 
 ✅ **Lee automáticamente** correos de solicitud de crédito de Gmail
 ✅ **Extrae adjuntos** (PDF, PNG, JPG) de los correos
