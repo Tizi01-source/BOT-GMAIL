@@ -1,34 +1,50 @@
 import { GmailService } from './services/GmailService';
+import { GeminiService } from './services/GeminiService';
+import * as dotenv from 'dotenv';
 
-async function probarConexion() {
+dotenv.config();
+
+// 👇 Función mágica para hacer que el bot "respire"
+const esperar = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function arrancarBot() {
   const gmail = new GmailService();
+  const gemini = new GeminiService();
   
   try {
-    console.log('Iniciando conexión con el correo de pruebas...');
-    
-    // 1. Inicializar (esto abrirá el navegador si no hay token)
+    console.log('🚀 Iniciando Bot...');
     await gmail.init(); 
 
-    // 2. Obtener los últimos 10 correos que coincidan con la búsqueda
-    const correos = await gmail.obtenerSolicitudes(10);
+    const correos = await gmail.obtenerSolicitudes(5);
 
     if (correos.length === 0) {
-      console.log('✅ Conexión exitosa, pero no se encontraron correos sin leer con los filtros actuales.');
+      console.log('✅ No hay correos nuevos.');
       return;
     }
 
-    console.log(`\n📬 Se encontraron ${correos.length} correos nuevos:`);
-    correos.forEach((correo, index) => {
-      console.log(`\n--- Correo #${index + 1} ---`);
-      console.log(`De:      ${correo.de}`);
-      console.log(`Asunto:  ${correo.asunto}`);
-      console.log(`Fecha:   ${correo.fecha}`);
-      console.log(`Adjuntos: ${correo.adjuntos?.length ?? 0}`);
-    });
+    console.log(`\n📬 Se encontraron ${correos.length} correos nuevos.\n`);
+
+    for (const correo of correos) {
+      console.log(`--- Procesando correo de: ${correo.de} ---`);
+      
+      // 🛑 TRUCO TEMPORAL: Le mandamos SOLO el primer archivo (el recibo) para no saturar los tokens gratis
+      if (correo.adjuntos.length > 0) {
+        const primerAdjunto = correo.adjuntos[0];
+        const datosExtraidos = await gemini.extraerDatos(primerAdjunto);
+        
+        if (datosExtraidos) {
+          console.log('\n📊 DATOS EXTRAÍDOS POR LA IA:');
+          console.dir(datosExtraidos, { colors: true });
+          console.log('-----------------------------------\n');
+        }
+      } else {
+        console.log('No hay archivos adjuntos en este correo.');
+      }
+    }
 
   } catch (error: any) {
-    console.error('❌ Error en la prueba:', error.message);
+    console.error('❌ Error general:', error.message);
   }
 }
 
-probarConexion();
+arrancarBot();
