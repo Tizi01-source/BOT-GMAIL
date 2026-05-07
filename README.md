@@ -2,7 +2,7 @@
 
 Automatización completa de procesamiento de solicitudes de crédito mediante análisis de recibos con IA.
 
-## 📋 Tabla de Contenidos
+## Tabla de Contenidos
 
 1. [Características](#características)
 2. [Arquitectura](#arquitectura)
