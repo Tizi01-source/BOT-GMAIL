@@ -21,4 +21,10 @@ export const CONFIG = {
     // Si quisieras buscar solo "cupo", podrías usar: 'is:unread subject:cupo'
     // Si querés que el bot solo atienda a ciertos comercios y no a cualquier persona que mande un mail a la cooperativa, podés obligar a que el remitente sea uno de tu lista. Ej: from:(juan@gmail.com OR ariel@hotmail.com)
   },
+  sheets: {
+    // ID de la hoja de cálculo de Google Sheets donde se guardarán los datos.
+    spreadsheetId: '1HPxRr8e4QF1EIzCbGiE8gH6t5AS5ps1rBMOCO-bDea8', 
+    // Rango de celdas en la hoja "Consultas" donde se guardarán los datos (desde A1 hasta I).
+    rangoConsultas: 'Consultas!A:I',
+  }
 };

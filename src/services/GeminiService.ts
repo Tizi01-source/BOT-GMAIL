@@ -58,7 +58,10 @@ export class GeminiService {
           "coincideSueldo": Booleano (true si el sueldoDepositado es igual o casi igual al recibo),
           "totalDescuentosDelDia": Número,
           "saldoSobranteDelDia": Número,
-          "aptoParaEvaluar": Booleano
+          "montoCuotaMaximo": Número,
+          "contieneReversiones": Booleano,
+          "aptoParaEvaluar": Booleano,
+          "esSocio": null
         }
 
         REGLAS PARA CALCULAR LOS DESCUENTOS Y EL SALDO SOBRANTE:
@@ -67,7 +70,10 @@ export class GeminiService {
         3. Buscá el ÚLTIMO débito/descuento que se hizo ESE MISMO DÍA.
         4. El "saldoSobranteDelDia" es el saldo que le quedó después de ese último débito del día de cobro.
         5. El "totalDescuentosDelDia" es la diferencia entre el saldo post-sueldo y el saldoSobranteDelDia.
-        6. El cliente es "aptoParaEvaluar" (true) SOLO SI el "saldoSobranteDelDia" es MAYOR a 200000.
+        6. "montoCuotaMaximo": Es el (saldoSobranteDelDia - 100000). Este es el margen real.
+        7. "contieneReversiones": Marcá true si encontrás palabras como "REVERSION", "DEVOLUCION" o "ANULACION" en los movimientos del mes.
+        8. "aptoParaEvaluar": Solo es true SI ("montoCuotaMaximo" > 200000) Y ("contieneReversiones" es false).
+        9. "esSocio": Dejalo como null por ahora.
 
         Devolvé el resultado ÚNICAMENTE en formato JSON, sin markdown ni comillas triples. Si un dato no existe, poné null.
       `;
